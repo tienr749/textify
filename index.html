@@ -175,24 +175,51 @@
             to {bottom: 0; opacity: 0;}
         }
 
-        .checkbox-container {
-            display: flex;
-            justify-content: start;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+		.checkbox-container {
+			display: flex;
+			align-items: center; /* 체크박스와 레이블의 세로 정렬을 맞춤 */
+			margin-bottom: 15px;
+		}
 
-        .checkbox-container label {
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-            color: var(--label-color);
-        }
+		.checkbox-container input[type="checkbox"] {
+			appearance: auto; /* 기본 브라우저 스타일 유지 */
+			margin-right: 8px;
+			width: 16px;
+			height: 16px;
+			border-radius: 4px;
+			background-color: var(--checkbox-bg);
+			border: 1px solid var(--checkbox-border);
+			cursor: pointer;
+		}
 
-        .checkbox-container input[type="checkbox"] {
-            margin-right: 5px;
-            width: auto;
-        }
+		/* 다크 모드에서 커스텀 스타일 적용 */
+		.dark-mode .checkbox-container input[type="checkbox"] {
+			appearance: none; /* 브라우저 기본 스타일 제거 */
+			margin-right: 8px;
+			width: 16px;
+			height: 16px;
+			border-radius: 4px;
+			background-color: var(--checkbox-bg);
+			border: 1px solid var(--checkbox-border);
+			cursor: pointer;
+			display: inline-block; /* 커스텀 스타일로 요소 정렬 */
+			vertical-align: middle; /* 체크박스와 레이블의 세로 정렬을 맞춤 */
+		}
+
+		.checkbox-container input[type="checkbox"]:checked {
+			background-color: var(--button-bg);
+			border-color: var(--button-hover);
+		}
+
+		.checkbox-container label {
+			margin-right: 20px;
+			font-size: 14px;
+			color: var(--label-color);
+			vertical-align: middle; /* 텍스트와 체크박스의 세로 정렬을 맞춤 */
+			cursor: pointer;
+		}
+
+
 
         .snippet {
             background-color: var(--snippet-bg);
