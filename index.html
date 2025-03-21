@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>텍스트 변환기</title>
+    <style>
+		
+		/* Font Awesome 아이콘 사용을 위한 CDN 링크 추가 */
+		@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
+		
+		
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #34495e;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .input-row input {
+            width: calc(50% - 5px);
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+            border: 1px solid #bdc3c7;
+            padding: 15px;
+            min-height: 100px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+        }
+        .type-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .type-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .type-button.active {
+            background-color: #3498db;
+        }
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+        }
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+        .checkbox-container {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .checkbox-container label {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 5px;
+            width: auto;
+        }
+        .snippet {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 5px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-width: 100%;
+            overflow: hidden;
+        }
+		.highlight-a {
+			background-color: #FFD700; /* 금색 */
+			color: #000;
+			padding: 2px 0;
+			border-radius: 3px;
+		}
+		.highlight-c {
+			background-color: #90EE90; /* 연초록 */
+			color: #000;
+			padding: 2px 0;
+			border-radius: 3px;
+		}
+		
+		
+        /* 프리셋 관리 섹션 스타일 추가 */
+        .preset-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .preset-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .preset-name {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        .preset-buttons button {
+            width: 100%;
+            margin: 5px 0;
+        }
+		
+
+
+		.preset-section h3 {
+			cursor: pointer;
+			padding: 10px;
+			margin: 0;
+			background-color: #f0f0f0;
+			border-bottom: 1px solid #ddd;
+		}
+
+		.preset-section .content {
+			padding: 15px;
+			display: none;
+		}
+
+		.collapse-icon {
+			float: right;
+		}
+
+		.file-management-section button {
+			padding: 10px 15px;
+			margin-right: 10px;
+		}
+
+		.file-management-section i {
+			margin-right: 5px;
+		}
+
+		.copy-button {
+			background-color: #4CAF50;
+			color: white;
+			font-weight: bold;
+		}
+
+		.copy-button:hover {
+			background-color: #45a049;
+		}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>텍스트 변환기</h1>
+        
+				
+
+
+<div class="preset-section collapsible">
+    <h3 onclick="toggleCollapse(this)">프리셋 관리 (슬롯 1~10) <span class="collapse-icon">▼</span></h3>
+    <div class="content">        
+	
+        <div class="preset-section">
+            <!--<h3>프리셋 관리 (슬롯 1~10)</h3>-->
+            <select id="presetSlot" class="preset-name"></select>
+            <div class="preset-controls">
+                <input type="text" id="presetName" placeholder="프리셋 이름" class="preset-name">
+                <div class="preset-buttons">
+                    <button onclick="savePreset()">저장</button>
+                    <button onclick="loadPreset()">불러오기</button>
+                </div>
+            </div>
+        </div>
+	
+    </div>
+</div>
+
+		
+		
+        <div class="type-selector">
+            <button class="type-button active" onclick="selectType('일괄변환')" id="fullTransform">일괄변환</button>
+            <button class="type-button" onclick="selectType('규칙변환')" id="ruleTransform">규칙변환</button>
+        </div>
+
+        <label for="text">전체 텍스트:</label>
+        <textarea id="text" placeholder="변환할 텍스트를 입력하세요"></textarea>
+        
+        <div class="input-row">
+            <input type="text" id="wordA" placeholder="Char">
+            <input type="text" id="wordB" placeholder="🤖깡통">
+        </div>
+        
+        <div class="input-row">
+            <input type="text" id="wordC" placeholder="user">
+            <input type="text" id="wordD" placeholder="🐧깡캐">
+        </div>
+        
+        <div class="checkbox-container">
+            <label>
+                <input type="checkbox" id="checkA"> Char이름 검사
+            </label>
+            <label>
+                <input type="checkbox" id="checkC"> User이름 검사
+            </label>
+        </div>
+        
+        <button onclick="transformText()">변환</button>
+		<!-- 결과 복사하기 버튼 클래스 추가 -->
+		<button onclick="copyToClipboard()" class="copy-button">결과 복사하기</button>
+        
+        <div id="result"></div>
+        <div id="inspectionResult"></div>
+		
+		
+		<div></div>
+		<div class="file-management-section">
+					<h3>프리셋 파일 관리</h3>
+			<button onclick="exportPresets()"><i class="fas fa-file-export"></i> 내보내기</button>
+			<button onclick="importPresets()"><i class="fas fa-file-import"></i> 가져오기</button>
+		</div>
+    </div>
+
+    <div id="toast"></div>
+
+
+		
+		
+    <script>
+        // 프리셋 데이터 초기화
+        let presets = JSON.parse(localStorage.getItem('presets')) || Array(10).fill().map(() => ({
+            name: '빈 슬롯',
+            settings: null
+        }));
+
+        // 페이지 로드 시 프리셋 슬롯 목록 생성
+        function initPresetSlots() {
+            const presetSelect = document.getElementById('presetSlot');
+            presetSelect.innerHTML = presets.map((p, i) => 
+                `<option value="${i}">슬롯 ${i+1}: ${p.name}</option>`
+            ).join('');
+        }
+        initPresetSlots();
+
+        // 설정 저장
+        function savePreset() {
+            const slot = document.getElementById('presetSlot').value;
+            const presetName = document.getElementById('presetName').value || `슬롯 ${+slot+1}`;
+            
+            presets[slot] = {
+                name: presetName,
+                settings: {
+                    currentType: currentType,
+                    wordA: document.getElementById('wordA').value,
+                    wordB: document.getElementById('wordB').value,
+                    wordC: document.getElementById('wordC').value,
+                    wordD: document.getElementById('wordD').value,
+                    checkA: document.getElementById('checkA').checked,
+                    checkC: document.getElementById('checkC').checked
+                }
+            };
+            
+            localStorage.setItem('presets', JSON.stringify(presets));
+            initPresetSlots();
+            showToast(`${presetName} 설정 저장 완료!`);
+        }
+
+        // 설정 불러오기 
+        function loadPreset() {
+            const slot = document.getElementById('presetSlot').value;
+            const preset = presets[slot];
+            
+            if(!preset.settings) {
+                showToast('이 슬롯은 비어있습니다');
+                return;
+            }
+
+            const {currentType, wordA, wordB, wordC, wordD, checkA, checkC} = preset.settings;
+            
+            selectType(currentType);
+            document.getElementById('wordA').value = wordA;
+            document.getElementById('wordB').value = wordB;
+            document.getElementById('wordC').value = wordC;
+            document.getElementById('wordD').value = wordD;
+            document.getElementById('checkA').checked = checkA;
+            document.getElementById('checkC').checked = checkC;
+            
+            showToast(`${preset.name} 설정 불러오기 완료!`);
+        }
+		
+		function exportPresets() {
+			const presetData = JSON.stringify(presets);
+			const blob = new Blob([presetData], {type: 'application/json'});
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'text_converter_presets.json';
+			a.click();
+			URL.revokeObjectURL(url);
+		}
+
+		function importPresets() {
+			const fileInput = document.getElementById('presetFileInput');
+			fileInput.click();
+			fileInput.onchange = function(e) {
+				const file = e.target.files[0];
+				const reader = new FileReader();
+				reader.onload = function(e) {
+					try {
+						const importedPresets = JSON.parse(e.target.result);
+						presets = importedPresets;
+						localStorage.setItem('presets', JSON.stringify(presets));
+						initPresetSlots();
+						showToast('프리셋을 성공적으로 가져왔습니다.');
+					} catch (error) {
+						showToast('프리셋 파일 가져오기에 실패했습니다.');
+					}
+				};
+				reader.readAsText(file);
+			};
+		}
+
+
+    </script>
+	
+	
+    <script>
+        let currentType = '일괄변환';
+
+        function selectType(type) {
+            currentType = type;
+            document.getElementById('fullTransform').classList.toggle('active', type === '일괄변환');
+            document.getElementById('ruleTransform').classList.toggle('active', type === '규칙변환');
+        }
+
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+		
+		
+		function hasFinalConsonant(word) {
+			if (!/[\uAC00-\uD7A3]/.test(word)) return false; // 한글이 아닌 경우 false
+			const lastChar = word[word.length - 1];
+			return (lastChar.charCodeAt(0) - 0xAC00) % 28 > 0;
+		}
+
+		function ruleBasedTransform(text, fromWord, toWord) {
+			const josaPairs = [
+				['에게서', '에게서'], ['에게', '에게'], 
+				['으로', '로'], ['이라', '라'], ['이랑', '랑'], ['이고', '고'],
+				['이며', '며'], ['이었', '였'], ['이여', '여'], ['이야', '야'],
+				['을', '를'], ['이', '가'], ['은', '는'], ['과', '와'],
+				['의', '의']
+			];
+
+			function escapeRegExp(string) {
+				return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+			}
+
+
+			// 1: toWord 비한글  |  21: 종성 동일  |  22: 종성 다름
+			let caseType = 1;
+			let replaceWord = '';
+			const isToKorean = /[\uAC00-\uD7A3]/.test(toWord);
+			const isFromKorean = /[\uAC00-\uD7A3]/.test(fromWord);
+
+			// 케이스 판별 로직
+			if(isToKorean && isFromKorean) {
+				const fromFinal = hasFinalConsonant(fromWord);
+				const toFinal = hasFinalConsonant(toWord);
+				caseType = (fromFinal === toFinal) ? 21 : 22;
+			}
+
+			console.log(`[케이스 ${caseType}] ${
+				caseType === 1 ? 'toWord 비한글' : 
+				caseType === 21 ? '종성 동일' : '종성 다름'
+			}`);
+			
+			
+			for (let [josa1, josa2] of josaPairs) {
+				let searchWord1 = fromWord + josa1;
+				let searchWord2 = fromWord + josa2;
+
+				// 첫 번째 조사 조합 검사 및 치환
+				if (text.includes(searchWord1)) {
+					console.log(`[${searchWord1}] [검색결과: O]`);
+					
+					if(caseType == 22){
+						replaceWord = toWord + josa2;
+						console.log(`[${replaceWord}] [변환대상조사]`);
+					}else{
+						replaceWord = toWord + josa1;		
+						console.log(`[${replaceWord}] [변환대상조사]`);	
+					}
+					
+					//let replaceWord = toWord + (hasFinalConsonant(toWord) ? josa1 : josa2);
+					text = text.replace(new RegExp(escapeRegExp(searchWord1), 'g'), replaceWord);
+					console.log(`치환: ${searchWord1} → ${replaceWord}`);
+				} else {
+					console.log(`[${searchWord1}] [검색결과: X]`);
+				}
+
+				// 두 번째 조사 조합 검사 및 치환
+				if (text.includes(searchWord2)) {
+					console.log(`[${searchWord2}] [검색결과: O]`);
+					
+					if(caseType == 22){
+						replaceWord = toWord + josa1;
+						console.log(`[${replaceWord}] [변환대상조사]`);
+					}else{
+						replaceWord = toWord + josa2;		
+						console.log(`[${replaceWord}] [변환대상조사]`);	
+					}
+					
+					//let replaceWord = toWord + (hasFinalConsonant(toWord) ? josa1 : josa2);
+					
+					text = text.replace(new RegExp(escapeRegExp(searchWord2), 'g'), replaceWord);
+					console.log(`치환: ${searchWord2} → ${replaceWord}`);
+				} else {
+					console.log(`[${searchWord2}] [검색결과: X]`);
+				}
+			}
+			
+			
+			// trim-규칙에 따른 fromWord를 toWord로 교체
+			const trimPattern = /([^a-zA-Z0-9가-힣])/;
+			const words = text.split(trimPattern);
+			
+			for (let i = 0; i < words.length; i++) {
+				if (words[i] === fromWord) {
+					words[i] = toWord;
+					console.log(`[단어 교체] ${fromWord} → ${toWord}`);
+				}
+			}
+
+			text = words.join('');
+
+			return text;
+		}
+
+
+
+
+
+        function transformText() {
+            let text = document.getElementById('text').value;
+            const wordA = document.getElementById('wordA').value;
+            const wordB = document.getElementById('wordB').value;
+            const wordC = document.getElementById('wordC').value;
+            const wordD = document.getElementById('wordD').value;
+
+
+			if (currentType === '규칙변환') {
+				text = ruleBasedTransform(text, wordA, wordB);
+				text = ruleBasedTransform(text, wordC, wordD);
+			} else {
+				// 기존 일괄변환 로직
+                text = text.replace(new RegExp(escapeRegExp(wordA), 'g'), wordB);
+                text = text.replace(new RegExp(escapeRegExp(wordC), 'g'), wordD);
+			}
+			
+            document.getElementById('result').innerText = text;
+            showToast(`${currentType}으로 변환되었습니다.`);
+            inspectText(text);
+        }
+
+        function inspectText(text) {
+            const checkA = document.getElementById('checkA').checked;
+            const checkC = document.getElementById('checkC').checked;
+            const wordA = document.getElementById('wordA').value;
+            const wordC = document.getElementById('wordC').value;
+            let inspectionResult = "";
+
+
+
+		function processMatches(word, matches, label) {
+			if (matches.length === 0) return;
+
+			const highlightClass = label === 'A' ? 'highlight-a' : 'highlight-c';
+			inspectionResult += `<h3>${label} 단어 "<span class="${highlightClass}">${word}</span>" ${matches.length}회 검색됨:</h3>`;
+			
+			const contextWindow = 10; // 단어 기준 컨텍스트
+			
+			matches.forEach((match) => {
+				const [fullText, before, target, after] = getTextChunk(match.index, word.length, contextWindow);
+				const highlighted = `${escapeHtml(before)}<span class="${highlightClass}">${escapeHtml(target)}</span>${escapeHtml(after)}`;
+				inspectionResult += `<div class="snippet">...${highlighted}...</div>`;
+			});
+		}
+
+function getTextChunk(startIndex, wordLength, windowSize) {
+    const words = text.split(/(\s+)/);
+    let wordIndex = -1;
+    let charCount = 0;
+
+    // 단어 인덱스 찾기
+    for (let i = 0; i < words.length; i++) {
+        if (charCount + words[i].length > startIndex) {
+            wordIndex = i;
+            break;
+        }
+        charCount += words[i].length;
+    }
+
+    if (wordIndex === -1) return ['', '', '', ''];
+
+    const start = Math.max(0, wordIndex - windowSize);
+    const end = Math.min(words.length, wordIndex + windowSize + 1);
+
+    const before = words.slice(start, wordIndex).join('');
+    const target = words[wordIndex];
+    const after = words.slice(wordIndex + 1, end).join('');
+
+    return [text, before, target, after];
+}
+
+
+
+		// XSS 방지 함수
+		function escapeHtml(unsafe) {
+			return unsafe.toString()
+				.replace(/&/g, "&amp;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;")
+				.replace(/"/g, "&quot;")
+				.replace(/'/g, "&#039;");
+		}
+
+
+
+			// 체크박스가 하나라도 선택되어 있는지 확인
+			if (checkA || checkC) {
+				if (checkA && wordA) {
+					const regexA = new RegExp(escapeRegExp(wordA), 'g');
+					const matchesA = [...text.matchAll(regexA)];
+					processMatches(wordA, matchesA, 'A');
+				}
+
+				if (checkC && wordC) {
+					const regexC = new RegExp(escapeRegExp(wordC), 'g');
+					const matchesC = [...text.matchAll(regexC)];
+					processMatches(wordC, matchesC, 'C');
+				}
+
+				document.getElementById('inspectionResult').innerHTML = inspectionResult || 
+					"<div class='snippet'>✅ 모든 단어 검사 완료</div>";
+			} else {
+				// 체크박스가 선택되지 않았을 때
+				document.getElementById('inspectionResult').innerHTML = 
+					"<div class='snippet'>　　</div>";
+			}
+        }
+
+        function copyToClipboard() {
+            const result = document.getElementById('result');
+            const textArea = document.createElement('textarea');
+            textArea.value = result.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('결과가 클립보드에 복사되었습니다!');
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+		
+		function toggleCollapse(element) {
+			const content = element.nextElementSibling;
+			const icon = element.querySelector('.collapse-icon');
+			if (content.style.display === "block") {
+				content.style.display = "none";
+				icon.textContent = "▼";
+			} else {
+				content.style.display = "block";
+				icon.textContent = "▲";
+			}
+		}
+
+    </script>
+</body>
+</html>
