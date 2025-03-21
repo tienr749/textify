@@ -28,6 +28,7 @@
             --highlight-c: #90EE90;
             --snippet-bg: #ffffff;
             --snippet-border: #bdc3c7;
+			--paste-button-bg: #f0f0f0; /* 일반 모드에서의 희미한 회색 */
         }
 
         .dark-mode {
@@ -50,6 +51,7 @@
             --highlight-c: #32CD32;
             --snippet-bg: #3b4b5a;
             --snippet-border: #506070;
+			--paste-button-bg: #2c3e50; /* 다크 모드에서의 배경색보다 약간 흐릿한 색 */
         }
 
         body {
@@ -431,6 +433,32 @@
 		.dark-mode #result:hover {
 			background-color: #2a4a6c; /* 조정된 배경색 */
 		}
+		
+
+
+		.paste-button {
+			background-color: var(--paste-button-bg);
+			color: var(--text-color);
+			border: none;
+			border-radius: 4px;
+			padding: 10px 15px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			margin-right: 10px;
+			font-size: 14px;
+		}
+
+		.paste-button:hover {
+			background-color: var(--button-hover);
+			transform: translateY(-2px);
+			box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+		}
+
+		.paste-button:before {
+			content: '📋 '; /* 클립보드 아이콘 추가 */
+			margin-right: 5px;
+		}
+
 
     </style>
 </head>
@@ -483,6 +511,8 @@
         </div>
 
         <label for="text">전체 텍스트:</label>
+		<button onclick="pasteFromClipboard()" class="paste-button">클립보드에서 붙여넣기</button>
+
         <textarea id="text" placeholder="변환할 텍스트를 입력하세요"></textarea>
         
         <div class="input-row">
@@ -962,6 +992,25 @@
 					showToast('클립보드 복사에 실패했습니다.');
 				}
 				document.body.removeChild(textArea);
+			}
+		}
+		function pasteFromClipboard() {
+			if (navigator.clipboard && window.isSecureContext) {
+				navigator.clipboard.readText()
+					.then(text => {
+						if (text) {
+							document.getElementById('text').value = text;
+							showToast('클립보드 내용을 붙여넣었습니다.');
+						} else {
+							showToast('클립보드가 비어있습니다.');
+						}
+					})
+					.catch(err => {
+						console.error('클립보드 읽기 실패:', err);
+						showToast('클립보드 내용을 가져오는데 실패했습니다.');
+					});
+			} else {
+				showToast('이 브라우저에서는 클립보드 접근이 제한됩니다.');
 			}
 		}
 
