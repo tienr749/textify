@@ -5,58 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>텍스트 변환기</title>
     <style>
-		
-		/* Font Awesome 아이콘 사용을 위한 CDN 링크 추가 */
-		@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
-		
-		
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
+        
+        :root {
+            --bg-color: #f0f0f0;
+            --text-color: #333;
+            --container-bg: #fff;
+            --button-bg: #3498db;
+            --button-hover: #2980b9;
+            --input-bg: #ffffff;
+            --input-border: #bdc3c7;
+            --input-text: #333;
+            --result-bg: #ecf0f1;
+            --checkbox-bg: #fff;
+            --checkbox-border: #bdc3c7;
+            --label-color: #34495e;
+            --h3-bg: #f0f0f0;
+            --h3-text: #333;
+            --inspection-bg: #f8f9fa;
+            --inspection-border: #dee2e6;
+            --highlight-a: #FFD700;
+            --highlight-c: #90EE90;
+            --snippet-bg: #ffffff;
+            --snippet-border: #bdc3c7;
+        }
+
+        .dark-mode {
+            --bg-color: #2c3e50;
+            --text-color: #ecf0f1;
+            --container-bg: #34495e;
+            --button-bg: #2980b9;
+            --button-hover: #3498db;
+            --input-bg: #3b4b5a;
+            --input-border: #506070;
+            --input-text: #ecf0f1;
+            --result-bg: #3b4b5a;
+            --checkbox-bg: #3b4b5a;
+            --checkbox-border: #506070;
+            --label-color: #ecf0f1;
+            --h3-bg: #34495e;
+            --h3-text: #ecf0f1;
+            --inspection-bg: #34495e;
+            --inspection-border: #506070;
+            --highlight-c: #32CD32;
+            --snippet-bg: #3b4b5a;
+            --snippet-border: #506070;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: #f0f0f0;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: #fff;
+            background-color: var(--container-bg);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: var(--text-color);
         }
-        label {
-            display: block;
-            margin-top: 15px;
-            color: #34495e;
-        }
-        textarea, input {
+
+        textarea, input, select {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #bdc3c7;
+            border: 1px solid var(--input-border);
             border-radius: 4px;
+            background-color: var(--input-bg);
+            color: var(--input-text);
             box-sizing: border-box;
         }
+
         textarea {
             height: 150px;
             resize: vertical;
         }
+
         .input-row {
             display: flex;
             justify-content: space-between;
         }
+
         .input-row input {
             width: calc(50% - 5px);
         }
+
         button {
             padding: 10px 15px;
-            background-color: #3498db;
+            background-color: var(--button-bg);
             color: white;
             border: none;
             border-radius: 4px;
@@ -64,22 +110,26 @@
             transition: background-color 0.3s;
             margin-right: 10px;
         }
+
         button:hover {
-            background-color: #2980b9;
+            background-color: var(--button-hover);
         }
+
         #result {
             margin-top: 20px;
-            border: 1px solid #bdc3c7;
+            border: 1px solid var(--input-border);
             padding: 15px;
             min-height: 100px;
-            background-color: #ecf0f1;
+            background-color: var(--result-bg);
             border-radius: 4px;
         }
+
         .type-selector {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
+
         .type-button {
             padding: 10px 20px;
             margin: 0 10px;
@@ -90,9 +140,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .type-button.active {
-            background-color: #3498db;
+            background-color: var(--button-bg);
         }
+
         #toast {
             visibility: hidden;
             min-width: 250px;
@@ -107,36 +159,44 @@
             left: 50%;
             bottom: 30px;
         }
+
         #toast.show {
             visibility: visible;
             animation: fadein 0.5s, fadeout 0.5s 2.5s;
         }
+
         @keyframes fadein {
             from {bottom: 0; opacity: 0;}
             to {bottom: 30px; opacity: 1;}
         }
+
         @keyframes fadeout {
             from {bottom: 30px; opacity: 1;}
             to {bottom: 0; opacity: 0;}
         }
+
         .checkbox-container {
             display: flex;
             justify-content: start;
             align-items: center;
             margin-bottom: 15px;
         }
+
         .checkbox-container label {
             margin-right: 20px;
             display: flex;
             align-items: center;
+            color: var(--label-color);
         }
+
         .checkbox-container input[type="checkbox"] {
             margin-right: 5px;
             width: auto;
         }
+
         .snippet {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
+            background-color: var(--snippet-bg);
+            border: 1px solid var(--snippet-border);
             border-radius: 4px;
             padding: 8px;
             margin: 5px 0;
@@ -146,448 +206,127 @@
             max-width: 100%;
             overflow: hidden;
         }
-		.highlight-a {
-			background-color: #FFD700; /* 금색 */
-			color: #000;
-			padding: 2px 0;
-			border-radius: 3px;
-		}
-		.highlight-c {
-			background-color: #90EE90; /* 연초록 */
-			color: #000;
-			padding: 2px 0;
-			border-radius: 3px;
-		}
-		
-		
-        /* 프리셋 관리 섹션 스타일 추가 */
+
+        .highlight-a {
+            background-color: var(--highlight-a);
+            color: #000;
+            padding: 2px 0;
+            border-radius: 3px;
+        }
+
+        .highlight-c {
+            background-color: var(--highlight-c);
+            color: #000;
+            padding: 2px 0;
+            border-radius: 3px;
+        }
+
         .preset-section {
             margin: 20px 0;
             padding: 15px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--input-border);
             border-radius: 8px;
         }
+
         .preset-controls {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-top: 10px;
         }
+
         .preset-name {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
         }
+
         .preset-buttons button {
             width: 100%;
             margin: 5px 0;
         }
-		
 
+        .preset-section h3 {
+            cursor: pointer;
+            padding: 10px;
+            margin: 0;
+            background-color: var(--h3-bg);
+            color: var(--h3-text);
+            border-bottom: 1px solid var(--input-border);
+        }
 
-		.preset-section h3 {
-			cursor: pointer;
-			padding: 10px;
-			margin: 0;
-			background-color: #f0f0f0;
-			border-bottom: 1px solid #ddd;
-		}
+        .preset-section .content {
+            padding: 15px;
+            display: none;
+        }
 
-		.preset-section .content {
-			padding: 15px;
-			display: none;
-		}
+        .collapse-icon {
+            float: right;
+        }
 
-		.collapse-icon {
-			float: right;
-		}
+        .file-management-section button {
+            padding: 10px 15px;
+            margin-right: 10px;
+        }
 
-		.file-management-section button {
-			padding: 10px 15px;
-			margin-right: 10px;
-		}
+        .file-management-section i {
+            margin-right: 5px;
+        }
 
-		.file-management-section i {
-			margin-right: 5px;
-		}
+        .copy-button {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
 
-		.copy-button {
-			background-color: #4CAF50;
-			color: white;
-			font-weight: bold;
-		}
+        .copy-button:hover {
+            background-color: #45a049;
+        }
 
-		.copy-button:hover {
-			background-color: #45a049;
-		}
-		
-		:root {
-			--bg-color: #f0f0f0;
-			--text-color: #333;
-			--container-bg: #fff;
-			--button-bg: #3498db;
-			--button-hover: #2980b9;
-		}
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-		.dark-mode {
-			--bg-color: #2c3e50;
-			--text-color: #ecf0f1;
-			--container-bg: #34495e;
-			--button-bg: #2980b9;
-			--button-hover: #3498db;
-		}
-
-		body {
-			background-color: var(--bg-color);
-			color: var(--text-color);
-		}
-
-		.container {
-			background-color: var(--container-bg);
-		}
-
-		button {
-			background-color: var(--button-bg);
-		}
-
-		button:hover {
-			background-color: var(--button-hover);
-		}
-
-		.theme-toggle {
-			position: fixed;
-			top: 20px;
-			right: 20px;
-			background-color: var(--button-bg);
-			color: white;
-			border: none;
-			border-radius: 50%;
-			width: 50px;
-			height: 50px;
-			font-size: 24px;
-			cursor: pointer;
-			transition: background-color 0.3s;
-		}
-
-		.theme-toggle:hover {
-			background-color: var(--button-hover);
-		}
-		
-		:root {
-    --bg-color: #f0f0f0;
-    --text-color: #333;
-    --container-bg: #fff;
-    --button-bg: #3498db;
-    --button-hover: #2980b9;
-    --input-bg: #ffffff;
-    --input-border: #bdc3c7;
-    --input-text: #333;
-}
-
-.dark-mode {
-    --bg-color: #2c3e50;
-    --text-color: #ecf0f1;
-    --container-bg: #34495e;
-    --button-bg: #2980b9;
-    --button-hover: #3498db;
-    --input-bg: #3b4b5a;
-    --input-border: #506070;
-    --input-text: #ecf0f1;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
-
-textarea, input, select {
-    background-color: var(--input-bg);
-    color: var(--input-text);
-    border: 1px solid var(--input-border);
-    padding: 10px;
-    border-radius: 4px;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 15px;
-}
-
-textarea {
-    resize: vertical;
-    height: 150px;
-}
-
-button {
-    background-color: var(--button-bg);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: var(--button-hover);
-}
-
-.container {
-    background-color: var(--container-bg);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.theme-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: var(--button-bg);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.theme-toggle:hover {
-    background-color: var(--button-hover);
-}
-
-:root {
-    --bg-color: #f0f0f0;
-    --text-color: #333;
-    --container-bg: #fff;
-    --button-bg: #3498db;
-    --button-hover: #2980b9;
-    --input-bg: #ffffff;
-    --input-border: #bdc3c7;
-    --input-text: #333;
-    --result-bg: #ecf0f1;
-    --checkbox-bg: #fff;
-    --checkbox-border: #bdc3c7;
-    --label-color: #34495e;
-    --h3-bg: #f0f0f0;
-    --h3-text: #333;
-}
-
-.dark-mode {
-    --bg-color: #2c3e50;
-    --text-color: #ecf0f1;
-    --container-bg: #34495e;
-    --button-bg: #2980b9;
-    --button-hover: #3498db;
-    --input-bg: #3b4b5a;
-    --input-border: #506070;
-    --input-text: #ecf0f1;
-    --result-bg: #3b4b5a;
-    --checkbox-bg: #3b4b5a;
-    --checkbox-border: #506070;
-    --label-color: #ecf0f1;
-    --h3-bg: #34495e;
-    --h3-text: #ecf0f1;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
-
-textarea, input, select {
-    background-color: var(--input-bg);
-    color: var(--input-text);
-    border: 1px solid var(--input-border);
-    padding: 10px;
-    border-radius: 4px;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 15px;
-}
-
-textarea {
-    resize: vertical;
-    height: 150px;
-}
-
-button {
-    background-color: var(--button-bg);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: var(--button-hover);
-}
-
-.container {
-    background-color: var(--container-bg);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#result {
-    margin-top: 20px;
-    border: 1px solid var(--input-border);
-    padding: 15px;
-    min-height: 100px;
-    background-color: var(--result-bg);
-    color: var(--text-color);
-    border-radius: 4px;
-    font-family: monospace;
-}
-
-.checkbox-container label {
-    color: var(--label-color);
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.checkbox-container input[type="checkbox"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    background-color: var(--checkbox-bg);
-    border: 1px solid var(--checkbox-border);
-    margin-right: 8px;
-    cursor: pointer;
-}
-
-.checkbox-container input[type="checkbox"]:checked {
-    background-color: var(--button-bg);
-    border-color: var(--button-hover);
-}
-
-.preset-section h3 {
-    background-color: var(--h3-bg);
-    color: var(--h3-text);
-    padding: 10px;
-    margin: 0;
-    border-bottom: 1px solid var(--input-border);
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.preset-section h3 .collapse-icon {
-    transition: transform 0.3s;
-}
-
-.preset-section h3[data-collapsed="true"] .collapse-icon {
-    transform: rotate(0deg);
-}
-
-.preset-section h3[data-collapsed="false"] .collapse-icon {
-    transform: rotate(180deg);
-}
-
-:root {
-    --result-bg: #ecf0f1; /* 기본 결과 배경색 */
-    --inspection-bg: #f8f9fa; /* 기본 inspectionResult 배경색 */
-    --inspection-border: #dee2e6; /* 기본 inspectionResult 테두리색 */
-    --highlight-a: #FFD700; /* 금색 (A 단어 하이라이트) */
-    --highlight-c: #90EE90; /* 연초록색 (C 단어 하이라이트) */
-    --inspection-text: #333; /* inspectionResult 텍스트 색상 */
-    
-    --snippet-bg: #ffffff; /* 검색 결과 단위 배경색 */
-    --snippet-border: #bdc3c7; /* 검색 결과 단위 테두리색 */
-}
-
-.dark-mode {
-    --result-bg: #3b4b5a; /* 어두운 결과 배경색 */
-    --inspection-bg: #34495e; /* 다크모드 inspectionResult 배경색 */
-    --inspection-border: #506070; /* 다크모드 inspectionResult 테두리색 */
-    --highlight-a: #FFD700; /* 금색 (변하지 않음) */
-    --highlight-c: #32CD32; /* 진초록색 (C 단어 하이라이트, 다크 모드에서 더 선명하게) */
-    --inspection-text: #ecf0f1; /* 다크모드 텍스트 색상 */
-    
-    --snippet-bg: #3b4b5a; /* 검색 결과 단위 배경색 (다크 모드) */
-    --snippet-border: #506070; /* 검색 결과 단위 테두리색 (다크 모드) */
-}
-
-#inspectionResult {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: var(--inspection-bg);
-    color: var(--inspection-text);
-    border-radius: 4px;
-    font-size: 14px;
-    line-height: 1.6;
-    overflow: auto;
-    white-space: pre-wrap;
-}
-
-#inspectionResult .snippet {
-    background-color: var(--snippet-bg);
-    color: var(--inspection-text);
-    border: 1px solid var(--snippet-border);
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    font-size: 13px;
-    font-family: monospace;
-}
-
-.highlight-a {
-    background-color: var(--highlight-a);
-    color: #000;
-    padding: 2px 4px;
-    border-radius: 3px;
-}
-
-.highlight-c {
-    background-color: var(--highlight-c);
-    color: #000;
-    padding: 2px 4px;
-    border-radius: 3px;
-}
-
-
+        .theme-toggle:hover {
+            background-color: var(--button-hover);
+        }
     </style>
 </head>
 <body>
     <div class="container">
-	
-	<button id="themeToggle" class="theme-toggle">
-		<i class="fas fa-moon"></i>
-	</button>
-
-
+        <button id="themeToggle" class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
 
         <h1>텍스트 변환기</h1>
-        
-				
 
-
-<div class="preset-section collapsible">
-    <h3 onclick="toggleCollapse(this)">프리셋 관리 (슬롯 1~10) <span class="collapse-icon">▼</span></h3>
-    <div class="content">        
-	
-        <div class="preset-section">
-            <!--<h3>프리셋 관리 (슬롯 1~10)</h3>-->
-            <select id="presetSlot" class="preset-name"></select>
-            <div class="preset-controls">
-                <input type="text" id="presetName" placeholder="프리셋 이름" class="preset-name">
-                <div class="preset-buttons">
-                    <button onclick="savePreset()">저장</button>
-                    <button onclick="loadPreset()">불러오기</button>
+        <div class="preset-section collapsible">
+            <h3 onclick="toggleCollapse(this)">프리셋 관리 (슬롯 1~10) <span class="collapse-icon">▼</span></h3>
+            <div class="content">        
+                <div class="preset-section">
+                    <select id="presetSlot" class="preset-name"></select>
+                    <div class="preset-controls">
+                        <input type="text" id="presetName" placeholder="프리셋 이름" class="preset-name">
+                        <div class="preset-buttons">
+                            <button onclick="savePreset()">저장</button>
+                            <button onclick="loadPreset()">불러오기</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-	
-    </div>
-</div>
 
-		
-		
         <div class="type-selector">
             <button class="type-button active" onclick="selectType('일괄변환')" id="fullTransform">일괄변환</button>
             <button class="type-button" onclick="selectType('규칙변환')" id="ruleTransform">규칙변환</button>
@@ -616,28 +355,20 @@ button:hover {
         </div>
         
         <button onclick="transformText()">변환</button>
-		<!-- 결과 복사하기 버튼 클래스 추가 -->
-		<button onclick="copyToClipboard()" class="copy-button">결과 복사하기</button>
+        <button onclick="copyToClipboard()" class="copy-button">결과 복사하기</button>
         
         <div id="result"></div>
         <div id="inspectionResult"></div>
-		
-		
-		<div></div>
-		<div class="file-management-section">
-					<h3>프리셋 파일 관리</h3>
-			<button onclick="exportPresets()"><i class="fas fa-file-export"></i> 내보내기</button>
-			<button onclick="importPresets()"><i class="fas fa-file-import"></i> 가져오기</button>
-		</div>
+        
+        <div class="file-management-section">
+            <h3>프리셋 파일 관리</h3>
+            <button onclick="exportPresets()"><i class="fas fa-file-export"></i> 내보내기</button>
+            <button onclick="importPresets()"><i class="fas fa-file-import"></i> 가져오기</button>
+        </div>
     </div>
 
     <div id="toast"></div>
-
-
-		
-		
     <script>
-        // 프리셋 데이터 초기화
         let presets = JSON.parse(localStorage.getItem('presets')) || Array(10).fill().map(() => ({
             name: '빈 슬롯',
             settings: null
@@ -709,38 +440,38 @@ button:hover {
 			URL.revokeObjectURL(url);
 		}
 
-function importPresets() {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.json';
-    
-    fileInput.onchange = function(e) {
-        const file = e.target.files[0];
-        if (!file) {
-            showToast('파일 선택이 취소되었습니다.');
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const importedPresets = JSON.parse(e.target.result);
-                if (!Array.isArray(importedPresets) || importedPresets.length !== 10) {
-                    throw new Error('올바르지 않은 프리셋 데이터 구조입니다.');
+        function importPresets() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.json';
+            
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) {
+                    showToast('파일 선택이 취소되었습니다.');
+                    return;
                 }
-                presets = importedPresets;
-                localStorage.setItem('presets', JSON.stringify(presets));
-                initPresetSlots();
-                showToast('프리셋을 성공적으로 가져왔습니다.');
-            } catch (error) {
-                showToast(`프리셋 가져오기 실패: ${error.message}`);
-            }
-        };
-        reader.readAsText(file);
-    };
-    
-    fileInput.click();
-}
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedPresets = JSON.parse(e.target.result);
+                        if (!Array.isArray(importedPresets) || importedPresets.length !== 10) {
+                            throw new Error('올바르지 않은 프리셋 데이터 구조입니다.');
+                        }
+                        presets = importedPresets;
+                        localStorage.setItem('presets', JSON.stringify(presets));
+                        initPresetSlots();
+                        showToast('프리셋을 성공적으로 가져왔습니다.');
+                    } catch (error) {
+                        showToast(`프리셋 가져오기 실패: ${error.message}`);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            
+            fileInput.click();
+        }
 
     </script>
 	
@@ -757,40 +488,33 @@ function importPresets() {
         function escapeRegExp(string) {
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
-		
-		
-		function hasFinalConsonant(word) {
-			if (!/[\uAC00-\uD7A3]/.test(word)) return false; // 한글이 아닌 경우 false
-			const lastChar = word[word.length - 1];
-			return (lastChar.charCodeAt(0) - 0xAC00) % 28 > 0;
-		}
 
-		function ruleBasedTransform(text, fromWord, toWord) {
-			const josaPairs = [
-				['에게서', '에게서'], ['에게', '에게'], 
-				['으로', '로'], ['이라', '라'], ['이랑', '랑'], ['이고', '고'],
-				['이며', '며'], ['이었', '였'], ['이여', '여'], ['이야', '야'],
-				['을', '를'], ['이', '가'], ['은', '는'], ['과', '와'],
-				['의', '의']
-			];
+        function hasFinalConsonant(word) {
+            if (!/[\uAC00-\uD7A3]/.test(word)) return false;
+            const lastChar = word[word.length - 1];
+            return (lastChar.charCodeAt(0) - 0xAC00) % 28 > 0;
+        }
 
-			function escapeRegExp(string) {
-				return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-			}
+        function ruleBasedTransform(text, fromWord, toWord) {
+            const josaPairs = [
+                ['에게서', '에게서'], ['에게', '에게'], 
+                ['으로', '로'], ['이라', '라'], ['이랑', '랑'], ['이고', '고'],
+                ['이며', '며'], ['이었', '였'], ['이여', '여'], ['이야', '야'],
+                ['을', '를'], ['이', '가'], ['은', '는'], ['과', '와'],
+                ['의', '의']
+            ];
 
+            let caseType = 1;
+            let replaceWord = '';
+            const isToKorean = /[\uAC00-\uD7A3]/.test(toWord);
+            const isFromKorean = /[\uAC00-\uD7A3]/.test(fromWord);
 
-			// 1: toWord 비한글  |  21: 종성 동일  |  22: 종성 다름
-			let caseType = 1;
-			let replaceWord = '';
-			const isToKorean = /[\uAC00-\uD7A3]/.test(toWord);
-			const isFromKorean = /[\uAC00-\uD7A3]/.test(fromWord);
+            if(isToKorean && isFromKorean) {
+                const fromFinal = hasFinalConsonant(fromWord);
+                const toFinal = hasFinalConsonant(toWord);
+                caseType = (fromFinal === toFinal) ? 21 : 22;
+            }
 
-			// 케이스 판별 로직
-			if(isToKorean && isFromKorean) {
-				const fromFinal = hasFinalConsonant(fromWord);
-				const toFinal = hasFinalConsonant(toWord);
-				caseType = (fromFinal === toFinal) ? 21 : 22;
-			}
 
 			console.log(`[케이스 ${caseType}] ${
 				caseType === 1 ? 'toWord 비한글' : 
@@ -859,82 +583,74 @@ function importPresets() {
 			return text;
 		}
 
-
-
-
-
-        function transformText() {
-            let text = document.getElementById('text').value;
-            const wordA = document.getElementById('wordA').value;
-            const wordB = document.getElementById('wordB').value;
-            const wordC = document.getElementById('wordC').value;
-            const wordD = document.getElementById('wordD').value;
-
+		function transformText() {
+			let text = document.getElementById('text').value;
+			const wordA = document.getElementById('wordA').value;
+			const wordB = document.getElementById('wordB').value;
+			const wordC = document.getElementById('wordC').value;
+			const wordD = document.getElementById('wordD').value;
 
 			if (currentType === '규칙변환') {
 				text = ruleBasedTransform(text, wordA, wordB);
 				text = ruleBasedTransform(text, wordC, wordD);
 			} else {
 				// 기존 일괄변환 로직
-                text = text.replace(new RegExp(escapeRegExp(wordA), 'g'), wordB);
-                text = text.replace(new RegExp(escapeRegExp(wordC), 'g'), wordD);
+				text = text.replace(new RegExp(escapeRegExp(wordA), 'g'), wordB);
+				text = text.replace(new RegExp(escapeRegExp(wordC), 'g'), wordD);
 			}
 			
-            document.getElementById('result').innerText = text;
-            showToast(`${currentType}으로 변환되었습니다.`);
-            inspectText(text);
-        }
-
-        function inspectText(text) {
-            const checkA = document.getElementById('checkA').checked;
-            const checkC = document.getElementById('checkC').checked;
-            const wordA = document.getElementById('wordA').value;
-            const wordC = document.getElementById('wordC').value;
-            let inspectionResult = "";
-
-
-
-		function processMatches(word, matches, label) {
-			if (matches.length === 0) return;
-
-			const highlightClass = label === 'A' ? 'highlight-a' : 'highlight-c';
-			//inspectionResult += `<h3>${label} 단어 "<span class="${highlightClass}">${word}</span>" ${matches.length}회 검색됨:</h3>`;
-			inspectionResult += `<h3> "<span class="${highlightClass}">${word}</span>" ${matches.length}회 검색됨:</h3>`;
-			
-			const contextWindow = 10; // 단어 기준 컨텍스트
-			
-			matches.forEach((match) => {
-				const [fullText, before, target, after] = getTextChunk(match.index, word.length, contextWindow);
-				const highlighted = `${escapeHtml(before)}<span class="${highlightClass}">${escapeHtml(target)}</span>${escapeHtml(after)}`;
-				inspectionResult += `<div class="snippet">...${highlighted}...</div>`;
-			});
+			document.getElementById('result').innerText = text;
+			showToast(`${currentType}으로 변환되었습니다.`);
+			inspectText(text);
 		}
 
-function getTextChunk(startIndex, wordLength, windowSize) {
-    const words = text.split(/(\s+)/);
-    let wordIndex = -1;
-    let charCount = 0;
+		function inspectText(text) {
+			const checkA = document.getElementById('checkA').checked;
+			const checkC = document.getElementById('checkC').checked;
+			const wordA = document.getElementById('wordA').value;
+			const wordC = document.getElementById('wordC').value;
+			let inspectionResult = "";
 
-    // 단어 인덱스 찾기
-    for (let i = 0; i < words.length; i++) {
-        if (charCount + words[i].length > startIndex) {
-            wordIndex = i;
-            break;
+			function processMatches(word, matches, label) {
+				if (matches.length === 0) return;
+
+				const highlightClass = label === 'A' ? 'highlight-a' : 'highlight-c';
+				inspectionResult += `<h3> "<span class="${highlightClass}">${word}</span>" ${matches.length}회 검색됨:</h3>`;
+				
+				const contextWindow = 10; // 단어 기준 컨텍스트
+				
+				matches.forEach((match) => {
+					const [fullText, before, target, after] = getTextChunk(match.index, word.length, contextWindow);
+					const highlighted = `${escapeHtml(before)}<span class="${highlightClass}">${escapeHtml(target)}</span>${escapeHtml(after)}`;
+					inspectionResult += `<div class="snippet">...${highlighted}...</div>`;
+				});
+			}
+        
+        function getTextChunk(startIndex, wordLength, windowSize) {
+            const words = text.split(/(\s+)/);
+            let wordIndex = -1;
+            let charCount = 0;
+        
+            // 단어 인덱스 찾기
+            for (let i = 0; i < words.length; i++) {
+                if (charCount + words[i].length > startIndex) {
+                    wordIndex = i;
+                    break;
+                }
+                charCount += words[i].length;
+            }
+        
+            if (wordIndex === -1) return ['', '', '', ''];
+        
+            const start = Math.max(0, wordIndex - windowSize);
+            const end = Math.min(words.length, wordIndex + windowSize + 1);
+        
+            const before = words.slice(start, wordIndex).join('');
+            const target = words[wordIndex];
+            const after = words.slice(wordIndex + 1, end).join('');
+        
+            return [text, before, target, after];
         }
-        charCount += words[i].length;
-    }
-
-    if (wordIndex === -1) return ['', '', '', ''];
-
-    const start = Math.max(0, wordIndex - windowSize);
-    const end = Math.min(words.length, wordIndex + windowSize + 1);
-
-    const before = words.slice(start, wordIndex).join('');
-    const target = words[wordIndex];
-    const after = words.slice(wordIndex + 1, end).join('');
-
-    return [text, before, target, after];
-}
 
 
 
@@ -947,9 +663,6 @@ function getTextChunk(startIndex, wordLength, windowSize) {
 				.replace(/"/g, "&quot;")
 				.replace(/'/g, "&#039;");
 		}
-
-
-
 			// 체크박스가 하나라도 선택되어 있는지 확인
 			if (checkA || checkC) {
 				if (checkA && wordA) {
@@ -971,61 +684,56 @@ function getTextChunk(startIndex, wordLength, windowSize) {
 				document.getElementById('inspectionResult').innerHTML = 
 					"<div class='snippet'>단어 검사가 비활성 상태입니다</div>";
 			}
-        }
-
-        function copyToClipboard() {
-            const result = document.getElementById('result');
-            const textArea = document.createElement('textarea');
-            textArea.value = result.textContent;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            showToast('결과가 클립보드에 복사되었습니다!');
-        }
-
-        function showToast(message) {
-            var toast = document.getElementById("toast");
-            toast.innerText = message;
-            toast.className = "show";
-            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
-        }
-		
-		function toggleCollapse(element) {
-			const content = element.nextElementSibling;
-			const icon = element.querySelector('.collapse-icon');
-			if (content.style.display === "block") {
-				content.style.display = "none";
-				icon.textContent = "▼";
-			} else {
-				content.style.display = "block";
-				icon.textContent = "▲";
-			}
 		}
 
+		function copyToClipboard() {
+			const result = document.getElementById('result');
+			const textArea = document.createElement('textarea');
+			textArea.value = result.textContent;
+			document.body.appendChild(textArea);
+			textArea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textArea);
+			showToast('결과가 클립보드에 복사되었습니다!');
+		}
 
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const icon = themeToggle.querySelector('i');
+		function showToast(message) {
+			var toast = document.getElementById("toast");
+			toast.innerText = message;
+			toast.className = "show";
+			setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+		}
 
-themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    if (body.classList.contains('dark-mode')) {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-    } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-    }
-});
+		function toggleCollapse(element) {
+			const content = element.nextElementSibling;
+			const isCollapsed = content.style.display !== "block";
 
-function toggleCollapse(element) {
-    const content = element.nextElementSibling;
-    const isCollapsed = content.style.display !== "block";
+			content.style.display = isCollapsed ? "block" : "none";
+			element.setAttribute("data-collapsed", isCollapsed);
+		}
 
-    content.style.display = isCollapsed ? "block" : "none";
-    element.setAttribute("data-collapsed", isCollapsed);
-}
+		const themeToggle = document.getElementById('themeToggle');
+		const body = document.body;
+		const icon = themeToggle.querySelector('i');
+
+		themeToggle.addEventListener('click', () => {
+			body.classList.toggle('dark-mode');
+			if (body.classList.contains('dark-mode')) {
+				icon.classList.remove('fa-moon');
+				icon.classList.add('fa-sun');
+			} else {
+				icon.classList.remove('fa-sun');
+				icon.classList.add('fa-moon');
+			}
+		});
+
+        function toggleCollapse(element) {
+            const content = element.nextElementSibling;
+            const isCollapsed = content.style.display !== "block";
+        
+            content.style.display = isCollapsed ? "block" : "none";
+            element.setAttribute("data-collapsed", isCollapsed);
+        }
 
 
     </script>
