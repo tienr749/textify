@@ -220,10 +220,348 @@
 		.copy-button:hover {
 			background-color: #45a049;
 		}
+		
+		:root {
+			--bg-color: #f0f0f0;
+			--text-color: #333;
+			--container-bg: #fff;
+			--button-bg: #3498db;
+			--button-hover: #2980b9;
+		}
+
+		.dark-mode {
+			--bg-color: #2c3e50;
+			--text-color: #ecf0f1;
+			--container-bg: #34495e;
+			--button-bg: #2980b9;
+			--button-hover: #3498db;
+		}
+
+		body {
+			background-color: var(--bg-color);
+			color: var(--text-color);
+		}
+
+		.container {
+			background-color: var(--container-bg);
+		}
+
+		button {
+			background-color: var(--button-bg);
+		}
+
+		button:hover {
+			background-color: var(--button-hover);
+		}
+
+		.theme-toggle {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			background-color: var(--button-bg);
+			color: white;
+			border: none;
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+			font-size: 24px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		.theme-toggle:hover {
+			background-color: var(--button-hover);
+		}
+		
+		:root {
+    --bg-color: #f0f0f0;
+    --text-color: #333;
+    --container-bg: #fff;
+    --button-bg: #3498db;
+    --button-hover: #2980b9;
+    --input-bg: #ffffff;
+    --input-border: #bdc3c7;
+    --input-text: #333;
+}
+
+.dark-mode {
+    --bg-color: #2c3e50;
+    --text-color: #ecf0f1;
+    --container-bg: #34495e;
+    --button-bg: #2980b9;
+    --button-hover: #3498db;
+    --input-bg: #3b4b5a;
+    --input-border: #506070;
+    --input-text: #ecf0f1;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+textarea, input, select {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--input-border);
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+textarea {
+    resize: vertical;
+    height: 150px;
+}
+
+button {
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--button-hover);
+}
+
+.container {
+    background-color: var(--container-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.theme-toggle:hover {
+    background-color: var(--button-hover);
+}
+
+:root {
+    --bg-color: #f0f0f0;
+    --text-color: #333;
+    --container-bg: #fff;
+    --button-bg: #3498db;
+    --button-hover: #2980b9;
+    --input-bg: #ffffff;
+    --input-border: #bdc3c7;
+    --input-text: #333;
+    --result-bg: #ecf0f1;
+    --checkbox-bg: #fff;
+    --checkbox-border: #bdc3c7;
+    --label-color: #34495e;
+    --h3-bg: #f0f0f0;
+    --h3-text: #333;
+}
+
+.dark-mode {
+    --bg-color: #2c3e50;
+    --text-color: #ecf0f1;
+    --container-bg: #34495e;
+    --button-bg: #2980b9;
+    --button-hover: #3498db;
+    --input-bg: #3b4b5a;
+    --input-border: #506070;
+    --input-text: #ecf0f1;
+    --result-bg: #3b4b5a;
+    --checkbox-bg: #3b4b5a;
+    --checkbox-border: #506070;
+    --label-color: #ecf0f1;
+    --h3-bg: #34495e;
+    --h3-text: #ecf0f1;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+textarea, input, select {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--input-border);
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+textarea {
+    resize: vertical;
+    height: 150px;
+}
+
+button {
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--button-hover);
+}
+
+.container {
+    background-color: var(--container-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#result {
+    margin-top: 20px;
+    border: 1px solid var(--input-border);
+    padding: 15px;
+    min-height: 100px;
+    background-color: var(--result-bg);
+    color: var(--text-color);
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.checkbox-container label {
+    color: var(--label-color);
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background-color: var(--checkbox-bg);
+    border: 1px solid var(--checkbox-border);
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"]:checked {
+    background-color: var(--button-bg);
+    border-color: var(--button-hover);
+}
+
+.preset-section h3 {
+    background-color: var(--h3-bg);
+    color: var(--h3-text);
+    padding: 10px;
+    margin: 0;
+    border-bottom: 1px solid var(--input-border);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preset-section h3 .collapse-icon {
+    transition: transform 0.3s;
+}
+
+.preset-section h3[data-collapsed="true"] .collapse-icon {
+    transform: rotate(0deg);
+}
+
+.preset-section h3[data-collapsed="false"] .collapse-icon {
+    transform: rotate(180deg);
+}
+
+:root {
+    --result-bg: #ecf0f1; /* 기본 결과 배경색 */
+    --inspection-bg: #f8f9fa; /* 기본 inspectionResult 배경색 */
+    --inspection-border: #dee2e6; /* 기본 inspectionResult 테두리색 */
+    --highlight-a: #FFD700; /* 금색 (A 단어 하이라이트) */
+    --highlight-c: #90EE90; /* 연초록색 (C 단어 하이라이트) */
+    --inspection-text: #333; /* inspectionResult 텍스트 색상 */
+    
+    --snippet-bg: #ffffff; /* 검색 결과 단위 배경색 */
+    --snippet-border: #bdc3c7; /* 검색 결과 단위 테두리색 */
+}
+
+.dark-mode {
+    --result-bg: #3b4b5a; /* 어두운 결과 배경색 */
+    --inspection-bg: #34495e; /* 다크모드 inspectionResult 배경색 */
+    --inspection-border: #506070; /* 다크모드 inspectionResult 테두리색 */
+    --highlight-a: #FFD700; /* 금색 (변하지 않음) */
+    --highlight-c: #32CD32; /* 진초록색 (C 단어 하이라이트, 다크 모드에서 더 선명하게) */
+    --inspection-text: #ecf0f1; /* 다크모드 텍스트 색상 */
+    
+    --snippet-bg: #3b4b5a; /* 검색 결과 단위 배경색 (다크 모드) */
+    --snippet-border: #506070; /* 검색 결과 단위 테두리색 (다크 모드) */
+}
+
+#inspectionResult {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--inspection-bg);
+    color: var(--inspection-text);
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
+#inspectionResult .snippet {
+    background-color: var(--snippet-bg);
+    color: var(--inspection-text);
+    border: 1px solid var(--snippet-border);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: monospace;
+}
+
+.highlight-a {
+    background-color: var(--highlight-a);
+    color: #000;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.highlight-c {
+    background-color: var(--highlight-c);
+    color: #000;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+
     </style>
 </head>
 <body>
     <div class="container">
+	
+	<button id="themeToggle" class="theme-toggle">
+		<i class="fas fa-moon"></i>
+	</button>
+
+
+
         <h1>텍스트 변환기</h1>
         
 				
@@ -560,7 +898,8 @@ function importPresets() {
 			if (matches.length === 0) return;
 
 			const highlightClass = label === 'A' ? 'highlight-a' : 'highlight-c';
-			inspectionResult += `<h3>${label} 단어 "<span class="${highlightClass}">${word}</span>" ${matches.length}회 검색됨:</h3>`;
+			//inspectionResult += `<h3>${label} 단어 "<span class="${highlightClass}">${word}</span>" ${matches.length}회 검색됨:</h3>`;
+			inspectionResult += `<h3> "<span class="${highlightClass}">${word}</span>" ${matches.length}회 검색됨:</h3>`;
 			
 			const contextWindow = 10; // 단어 기준 컨텍스트
 			
@@ -630,7 +969,7 @@ function getTextChunk(startIndex, wordLength, windowSize) {
 			} else {
 				// 체크박스가 선택되지 않았을 때
 				document.getElementById('inspectionResult').innerHTML = 
-					"<div class='snippet'>　　</div>";
+					"<div class='snippet'>단어 검사가 비활성 상태입니다</div>";
 			}
         }
 
@@ -663,6 +1002,31 @@ function getTextChunk(startIndex, wordLength, windowSize) {
 				icon.textContent = "▲";
 			}
 		}
+
+
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+const icon = themeToggle.querySelector('i');
+
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    if (body.classList.contains('dark-mode')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+    }
+});
+
+function toggleCollapse(element) {
+    const content = element.nextElementSibling;
+    const isCollapsed = content.style.display !== "block";
+
+    content.style.display = isCollapsed ? "block" : "none";
+    element.setAttribute("data-collapsed", isCollapsed);
+}
+
 
     </script>
 </body>
