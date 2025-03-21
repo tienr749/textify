@@ -371,27 +371,38 @@
 			URL.revokeObjectURL(url);
 		}
 
-		function importPresets() {
-			const fileInput = document.getElementById('presetFileInput');
-			fileInput.click();
-			fileInput.onchange = function(e) {
-				const file = e.target.files[0];
-				const reader = new FileReader();
-				reader.onload = function(e) {
-					try {
-						const importedPresets = JSON.parse(e.target.result);
-						presets = importedPresets;
-						localStorage.setItem('presets', JSON.stringify(presets));
-						initPresetSlots();
-						showToast('프리셋을 성공적으로 가져왔습니다.');
-					} catch (error) {
-						showToast('프리셋 파일 가져오기에 실패했습니다.');
-					}
-				};
-				reader.readAsText(file);
-			};
-		}
-
+function importPresets() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json';
+    
+    fileInput.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) {
+            showToast('파일 선택이 취소되었습니다.');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedPresets = JSON.parse(e.target.result);
+                if (!Array.isArray(importedPresets) || importedPresets.length !== 10) {
+                    throw new Error('올바르지 않은 프리셋 데이터 구조입니다.');
+                }
+                presets = importedPresets;
+                localStorage.setItem('presets', JSON.stringify(presets));
+                initPresetSlots();
+                showToast('프리셋을 성공적으로 가져왔습니다.');
+            } catch (error) {
+                showToast(`프리셋 가져오기 실패: ${error.message}`);
+            }
+        };
+        reader.readAsText(file);
+    };
+    
+    fileInput.click();
+}
 
     </script>
 	
