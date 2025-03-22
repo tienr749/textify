@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -735,41 +736,41 @@
 
 				// 첫 번째 조사 조합 검사 및 치환
 				if (text.includes(searchWord1)) {
-					console.log(`[${searchWord1}] [검색결과: O]`);
+					//console.log(`[${searchWord1}] [검색결과: O]`);
 					
 					if(caseType == 22){
 						replaceWord = toWord + josa2;
-						console.log(`[${replaceWord}] [변환대상조사]`);
+						//console.log(`[${replaceWord}] [변환대상조사]`);
 					}else{
 						replaceWord = toWord + josa1;		
-						console.log(`[${replaceWord}] [변환대상조사]`);	
+						//console.log(`[${replaceWord}] [변환대상조사]`);	
 					}
 					
 					//let replaceWord = toWord + (hasFinalConsonant(toWord) ? josa1 : josa2);
 					text = text.replace(new RegExp(escapeRegExp(searchWord1), 'g'), replaceWord);
-					console.log(`치환: ${searchWord1} → ${replaceWord}`);
+					//console.log(`치환: ${searchWord1} → ${replaceWord}`);
 				} else {
-					console.log(`[${searchWord1}] [검색결과: X]`);
+					//console.log(`[${searchWord1}] [검색결과: X]`);
 				}
 
 				// 두 번째 조사 조합 검사 및 치환
 				if (text.includes(searchWord2)) {
-					console.log(`[${searchWord2}] [검색결과: O]`);
+					//console.log(`[${searchWord2}] [검색결과: O]`);
 					
 					if(caseType == 22){
 						replaceWord = toWord + josa1;
-						console.log(`[${replaceWord}] [변환대상조사]`);
+						//console.log(`[${replaceWord}] [변환대상조사]`);
 					}else{
 						replaceWord = toWord + josa2;		
-						console.log(`[${replaceWord}] [변환대상조사]`);	
+						//console.log(`[${replaceWord}] [변환대상조사]`);	
 					}
 					
 					//let replaceWord = toWord + (hasFinalConsonant(toWord) ? josa1 : josa2);
 					
 					text = text.replace(new RegExp(escapeRegExp(searchWord2), 'g'), replaceWord);
-					console.log(`치환: ${searchWord2} → ${replaceWord}`);
+					//console.log(`치환: ${searchWord2} → ${replaceWord}`);
 				} else {
-					console.log(`[${searchWord2}] [검색결과: X]`);
+					//console.log(`[${searchWord2}] [검색결과: X]`);
 				}
 			}
 			
@@ -781,7 +782,7 @@
 			for (let i = 0; i < words.length; i++) {
 				if (words[i] === fromWord) {
 					words[i] = toWord;
-					console.log(`[단어 교체] ${fromWord} → ${toWord}`);
+					//console.log(`[단어 교체] ${fromWord} → ${toWord}`);
 				}
 			}
 
@@ -796,15 +797,30 @@
 			const wordB = document.getElementById('wordB').value;
 			const wordC = document.getElementById('wordC').value;
 			const wordD = document.getElementById('wordD').value;
+			
 
+			if (text.trim() === '') {
+				showToast('변환할 텍스트가 없습니다.');
+				return; // 함수 실행 중단
+			}
+	
 			if (currentType === '규칙변환') {
-				text = ruleBasedTransform(text, wordA, wordB);
-				text = ruleBasedTransform(text, wordC, wordD);
+				if (wordA !== '') {
+					text = ruleBasedTransform(text, wordA, wordB);
+				}
+				if (wordC !== '') {
+					text = ruleBasedTransform(text, wordC, wordD);
+				}
 			} else {
 				// 기존 일괄변환 로직
-				text = text.replace(new RegExp(escapeRegExp(wordA), 'g'), wordB);
-				text = text.replace(new RegExp(escapeRegExp(wordC), 'g'), wordD);
+				if (wordA !== '') {
+					text = text.replace(new RegExp(escapeRegExp(wordA), 'g'), wordB);
+				}
+				if (wordC !== '') {
+					text = text.replace(new RegExp(escapeRegExp(wordC), 'g'), wordD);
+				}
 			}
+
 			
 			document.getElementById('result').innerText = text;
 			showToast(`${currentType}으로 변환되었습니다.`);
